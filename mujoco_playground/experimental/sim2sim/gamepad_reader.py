@@ -36,8 +36,8 @@ class Gamepad:
 
   def __init__(
       self,
-      vendor_id=0x046D,
-      product_id=0xC219,
+      vendor_id=1118,
+      product_id=654,
       vel_scale_x=0.4,
       vel_scale_y=0.4,
       vel_scale_rot=1.0,
@@ -89,9 +89,9 @@ class Gamepad:
     self._device.close()
 
   def update_command(self, data):
-    left_x = -(data[1] - 128) / 128.0
-    left_y = -(data[2] - 128) / 128.0
-    right_x = -(data[3] - 128) / 128.0
+    left_x = -(data[6] - 128) / 128.0 if data[7] > 0 else 0
+    left_y = (data[8] - 128) / 128.0 if data[9] > 0 else 0
+    right_x = -(data[10] - 128) / 128.0 if data[11] > 0 else 0
 
     self.vx = _interpolate(left_y, 1.0, self._vel_scale_x)
     self.vy = _interpolate(left_x, 1.0, self._vel_scale_y)
